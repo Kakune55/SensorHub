@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SensorList</title>
+</head>
+<body>
+    <h1>SensorList</h1>
+    <hr>
+    <div id="sensorList"></div>>
+    </div>
+    <script>
+        fetch('/api/sensorlist')
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            let div = document.getElementById("sensorList")
+            data.forEach(item => {
+                let p = document.createElement('p')
+                let a = document.createElement('a')
+                p.innerHTML = `<h3>name:${item.name}</h3>id:${item.id}<br>lastUpdate:${item.lastUpdate}`
+                a.innerHTML = `<a href="/chart/${item.id}">查看详细数据</a><hr>`
+                div.appendChild(p)
+                div.appendChild(a)
+            })
+        })
+    </script>
+    </script>
+</body>
+</html>

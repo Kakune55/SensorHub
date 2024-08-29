@@ -5,7 +5,8 @@ import appconfig
 import dao.db.sdata
 
 from router.receive import receive_bp
-
+from router.page import page_bp
+from router.api import api_bp
 
 
 logging.basicConfig(level=logging.INFO)
@@ -16,6 +17,8 @@ logging.info("Config Loaded")
 app = Flask(__name__)
 
 app.register_blueprint(receive_bp)
+app.register_blueprint(page_bp)
+app.register_blueprint(api_bp)
 
 def init():
     if not os.path.exists("./data"):

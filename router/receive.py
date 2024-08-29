@@ -18,7 +18,7 @@ def receive(id: str):
     keylist = struct.getSensorKey(id)
     for key in keylist:
         data[key[0]] = request_data[key[0]]
-    if id in struct.getSensorList():
+    if struct.haveSensor(id):
         sdata.writeData(id, data)
         return "OK"
     return abort(400)

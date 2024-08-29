@@ -11,6 +11,16 @@ def getSensorList() -> list:
     return out
 
 
+def haveSensor(id: str) -> bool:
+    """Returns if the sensor exists"""
+    with open("data/struct.json") as f:
+        fjson = json.load(f)
+        for i in fjson:
+            if i["id"] == id:
+                return True
+    return False
+
+
 def getSensorKey(id: str) -> list:
     """Returns a Key and Type list of sensors"""
     with open("data/struct.json") as f:
@@ -31,5 +41,3 @@ def needTimestamp(id: str) -> bool:
                 if "timestamp" in i: return True
     return False
 
-
-print(getSensorKey("1234"))

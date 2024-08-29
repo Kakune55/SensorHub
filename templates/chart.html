@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<style>
+    /* Set the container to be horizontally scrollable */
+    .chart-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    /* Set the canvas width to be larger than the container to enable scrolling */
+    .chart-canvas {
+        width: 200%;
+        /* Adjust this based on the amount of data */
+    }
+</style>
+</head>
+
+<body>
+    <div class="chart-container">
+        <canvas id="myChart" class="chart-canvas"></canvas>
+    </div>
+
+    <script>
+        async function fetchData() {
+            const response = await fetch('/api/sensor/{{id}}/1000'); // Replace with your actual API endpoint
+            const data = await response.json();
+            return data;
+        }
+
+        async function renderChart() {
+            const rawData = await fetchData();
+
+            // Extract time labels
+            const labels = rawData.map(entry => new Date(entry.time).toLocaleTimeString());
+
+            // Extract data keys dynamically
+            const dataKeys = Object.keys(rawData[0].data);
+            const datasets = dataKeys.map(key => {
+                return {
+                    label: key,
+                    data: rawData.map(entry => entry.data[key]),
+                    borderColor: getRandomColor(),
+                    backgroundColor: 'rgba(0, 0, 0, 0)', // Transparent background
+                    fill: false,
+                    tension: 0.1
+                };
+            });
+
+            // Chart.js configuration
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Dynamic Data Over Time'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Time'
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Values'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Helper function to generate random colors for datasets
+        function getRandomColor() {
+            const r = Math.floor(Math.random() * 255);
+            const g = Math.floor(Math.random() * 255);
+            const b = Math.floor(Math.random() * 255);
+            return `rgba(${r}, ${g}, ${b}, 1)`;
+        }
+
+        // Render the chart on page load
+        window.onload = renderChart;
+    </script>
+</body>
+
+</html>

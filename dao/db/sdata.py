@@ -66,6 +66,6 @@ def readrealTimeData(id: str):
     with getConn() as conn:
         sql = "SELECT * FROM '" + id + "' ORDER BY timestamp DESC LIMIT 1"
         cursor = conn.execute(sql)
-        data = cursor.fetchall()
+        data = cursor.fetchone()
         logging.info("readrealTimeData " + id + " success")
         return data

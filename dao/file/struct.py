@@ -41,3 +41,13 @@ def needTimestamp(id: str) -> bool:
                 if "timestamp" in i: return True
     return False
 
+
+def getSensorLimit(id: str) -> int:
+    """Returns the limit of the sensor"""
+    with open("data/struct.json") as f:
+        fjson = json.load(f)
+        for i in fjson:
+            if i["id"] == id:
+                return i["maxstore"]
+        return 0
+

@@ -25,7 +25,12 @@ def init():
 
 def writeData(id: str, data: dict):
     """写入单条数据"""
+    limit = dao.file.struct.getSensorLimit(id)
     with getConn() as conn:
+        if limit != 0:
+            sql = "DELETE FROM '" + id + "' WHERE timestamp < " + str(data["timestamp"] - limit)
+            conn.execute(sql)
+            conn.commit()
         keyList = data.keys()
         sql = "INSERT INTO '" + id + "' ("
         for key in keyList:

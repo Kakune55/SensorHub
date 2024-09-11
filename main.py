@@ -3,6 +3,7 @@ import logging, os
 
 import appconfig
 import dao.db.sdata
+import dao.file.struct
 
 from router.receive import receive_bp
 from router.page import page_bp
@@ -25,6 +26,8 @@ def init():
     if not os.path.exists("./data"):
         logging.info("Data folder not found, creating...")
         os.mkdir("./data")
+    if dao.file.struct.init():
+        logging.info("Struct file initialized")
     dao.db.sdata.init()
 
 

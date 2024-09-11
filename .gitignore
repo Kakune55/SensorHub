@@ -161,4 +161,5 @@ cython_debug/
 
 test.py
 conf/app.ini
-data
+data/data.db
+data/struct.json

@@ -12,7 +12,7 @@ def getSensorList() -> list:
         util["name"] = sensor[0]
         util["id"] = sensor[1]
         realTimeData = sdata.readrealTimeData(sensor[1])
-        if len(realTimeData) == 0:
+        if realTimeData is None:
             util["lastUpdate"] = "Never"
         else:
             util["lastUpdate"] = time.ctime(realTimeData[0])

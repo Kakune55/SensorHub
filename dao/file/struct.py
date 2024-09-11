@@ -1,5 +1,13 @@
-import json
+import json, os, shutil
 
+def init() -> bool:
+    """Initializes the struct file
+    When the file doesn't exist, it will be copied from the example file and return True
+    """
+    if not os.path.exists("data/struct.json"):
+        shutil.copyfile("data/struct.json.example", "data/struct.json")
+        return True
+    return False
 
 def getSensorList() -> list:
     """Returns a list of sensors"""

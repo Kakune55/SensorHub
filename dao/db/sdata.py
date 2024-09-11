@@ -10,8 +10,8 @@ def init():
         sensorList = dao.file.struct.getSensorList()
         for sensor in sensorList:
             keyList = []
-            if dao.file.struct.needTimestamp(sensor[1]): # 添加时间戳
-                keyList = [["timestamp",'int']]
+            if dao.file.struct.needTimestamp(sensor[1]):  # 添加时间戳
+                keyList = [["timestamp", "int"]]
             keyList += dao.file.struct.getSensorKey(sensor[1])
             sql = "CREATE TABLE IF NOT EXISTS '" + sensor[1] + "' ("
             for key in keyList:
@@ -28,7 +28,12 @@ def writeData(id: str, data: dict):
     limit = dao.file.struct.getSensorLimit(id)
     with getConn() as conn:
         if limit != 0:
-            sql = "DELETE FROM '" + id + "' WHERE timestamp < " + str(data["timestamp"] - limit)
+            sql = (
+                "DELETE FROM '"
+                + id
+                + "' WHERE timestamp < "
+                + str(data["timestamp"] - limit)
+            )
             conn.execute(sql)
             conn.commit()
         keyList = data.keys()
@@ -49,12 +54,19 @@ def writeData(id: str, data: dict):
 def readData(id: str, start: int, end: int):
     """通过时间戳读取数据"""
     with getConn() as conn:
-        sql = "SELECT * FROM '" + id + "' WHERE timestamp >= " + str(start) + " AND timestamp <= " + str(end)
+        sql = (
+            "SELECT * FROM '"
+            + id
+            + "' WHERE timestamp >= "
+            + str(start)
+            + " AND timestamp <= "
+            + str(end)
+        )
         cursor = conn.execute(sql)
         data = cursor.fetchall()
         logging.info("readData " + id + " success")
         return data
-    
+
 
 def readNewData(id: str, num: int):
     """读取最新数据"""
@@ -64,7 +76,7 @@ def readNewData(id: str, num: int):
         data = cursor.fetchall()
         logging.info("readNewData " + id + " success")
         return data
-    
+
 
 def readrealTimeData(id: str):
     """读取实时数据"""

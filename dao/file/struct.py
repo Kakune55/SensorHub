@@ -32,13 +32,15 @@ def getSensorKey(id: str) -> list:
                     out.append([j["key"], j["type"]])
     return out
 
+
 def needTimestamp(id: str) -> bool:
     """Returns if the sensor needs a timestamp"""
     with open("data/struct.json") as f:
         fjson = json.load(f)
         for i in fjson:
             if i["id"] == id:
-                if "timestamp" in i: return True
+                if "timestamp" in i:
+                    return True
     return False
 
 
@@ -50,4 +52,3 @@ def getSensorLimit(id: str) -> int:
             if i["id"] == id:
                 return i["maxstore"]
         return 0
-

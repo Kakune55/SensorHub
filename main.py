@@ -20,6 +20,7 @@ app.register_blueprint(receive_bp)
 app.register_blueprint(page_bp)
 app.register_blueprint(api_bp)
 
+
 def init():
     if not os.path.exists("./data"):
         logging.info("Data folder not found, creating...")
